@@ -1,6 +1,5 @@
 export default class Keyboard {
   constructor () {
-    console.log('qwerqwer');
     window.addEventListener('keydown', evt => {
       console.log('keydown');
     });

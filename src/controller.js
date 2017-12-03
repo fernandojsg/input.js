@@ -1,4 +1,4 @@
-
+// Based on the webvr proposal
 class VRInputSource {
 
 }

@@ -2,7 +2,7 @@ import Gamepad from './gamepad';
 
 class Gamepads {
   constructor () {
-    console.log('qwerqwer');
+
     this.gamepads = [];
     this.controllers = [];
 
@@ -10,14 +10,14 @@ class Gamepads {
     this.updateGamepadsList();
 
     window.addEventListener('gamepadconnected', event => {
-      console.log('Gamepad connected at index %d: %s. %d buttons, %d axes.',
+      console.info('Gamepad connected at index %d: %s. %d buttons, %d axes.',
         event.gamepad.index, event.gamepad.id,
         event.gamepad.buttons.length, event.gamepad.axes.length);
       this.updateGamepadsList();
     });
 
     window.addEventListener('gamepaddisconnected', function (e) {
-      console.log('Gamepad disconnected from index %d: %s',
+      console.info('Gamepad disconnected from index %d: %s',
         e.gamepad.index, e.gamepad.id);
       this.updateGamepadsList();
     });
@@ -39,7 +39,6 @@ class Gamepads {
         this.gamepads.push(gamepadObj);
       }
     }
-    console.log(this.gamepads);
   }
 }
 
