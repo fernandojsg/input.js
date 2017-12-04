@@ -1,15 +1,12 @@
 export default class LongPress {
-  constructor (gamepad, button, onActivate) {
-    this.lastTime = 0;
-    this.timeOut = 250;
-
+  constructor (inputElement, onActivate) {
     this.onActivate = onActivate;
 
     this.onButtonDown = this.onButtonDown.bind(this);
     this.onButtonUp = this.onButtonUp.bind(this);
 
-    gamepad.addBinding('a', 'pressdown', this.onButtonDown);
-    gamepad.addBinding('a', 'pressup', this.onButtonUp);
+    inputElement.addBinding('pressdown', this.onButtonDown);
+    inputElement.addBinding('pressup', this.onButtonUp);
   }
 
   onButtonDown (event) {
@@ -18,8 +15,12 @@ export default class LongPress {
       self.onActivate();
     }, 1000);
   }
+  
+  updateState(controller) {
+  }
 
   onButtonUp () {
+    console.log('>>>>');
     clearTimeout(this.pressTimer);
   }
 }

@@ -4,9 +4,8 @@ class Gamepads {
   constructor () {
 
     this.gamepads = [];
-    this.controllers = [];
+    this.gamepad = [];
 
-    // Loop over every gamepad and if we find any that have a pose use it.
     this.updateGamepadsList();
 
     window.addEventListener('gamepadconnected', event => {
@@ -21,6 +20,17 @@ class Gamepads {
         e.gamepad.index, e.gamepad.id);
       this.updateGamepadsList();
     });
+
+    this.loop();
+  }
+
+  loop () {
+    this.poll();
+    this.raf = window.requestAnimationFrame(this.loop.bind(this));
+  }
+
+  poll () {
+
   }
 
   updateGamepadsList () {

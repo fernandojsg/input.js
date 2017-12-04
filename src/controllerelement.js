@@ -1,6 +1,6 @@
 export default class ControllerElement {
-  constructor(parent, name, buttonId, xAxisId, yAxisId) {
-    this.parent = parent;
+  constructor (controller, name, buttonId, xAxisId, yAxisId) {
+    this.controller = controller;
     this.name = name;
     this.buttonId = buttonId;
     this.xAxisId = xAxisId;
@@ -13,17 +13,21 @@ export default class ControllerElement {
     this.yAxisValue = 0;
   }
 
-  updateState(gamepad) {
-    var activator;
+  addBinding (activator, binding) {
+    this.controller.addBinding(this.name, activator, binding);
+  }
 
+  updateState (controller) {
+    var activator;
+/*Ç
     if (typeof this.buttonId !== 'undefined') {
-      var buttonState = gamepad.buttons[this.buttonId];
+      var buttonState = controller.buttons[this.buttonId];
 
       // Not changed.
       if (buttonState.pressed !== this.pressed) {
         this.pressed = buttonState.pressed;
 
-        this.parent.activateBinding(this.name, {
+        this.controller.activateBinding(this.name, {
           id: this.buttonId,
           event: buttonState.pressed ? 'pressdown' : 'pressup',
           name: this.name,
@@ -34,7 +38,7 @@ export default class ControllerElement {
       if (buttonState.touched !== this.touched) {
         this.touched = buttonState.touched;
 
-        this.parent.activateBinding(this.name, {
+        this.controller.activateBinding(this.name, {
           id: this.buttonId,
           event: buttonState.touched ? 'touchdown' : 'touchup',
           name: this.name,
@@ -47,7 +51,7 @@ export default class ControllerElement {
     // Axis state
     if (this.xAxisId) {
       var activator = 'move';
-      var axisValue = gamepad.axes[this.xAxisId];
+      var axisValue = controller.axes[this.xAxisId];
       if (this.xAxisValue !== axisValue) {
         // console.log(`axis x '${this.name}' ${axisValue}`, { id: this.buttonId, event: activator, name: this.name });
         this.xAxisValue = axisValue;
@@ -56,12 +60,13 @@ export default class ControllerElement {
 
     if (this.yAxisId) {
       var activator = 'move';
-      var axisValue = gamepad.axes[this.yAxisId];
+      var axisValue = controller.axes[this.yAxisId];
       if (this.yAxisValue !== axisValue) {
         // console.log(`axis y '${this.name}' ${axisValue}`, { id: this.buttonId, event: activator, name: this.name });
         this.yAxisValue = axisValue;
       }
     }
+    */
   }
 }
 
