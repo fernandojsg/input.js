@@ -1,12 +1,12 @@
 export default class LongPress {
-  constructor (inputElement, onActivate) {
+  constructor (controller, inputElement, onActivate) {
     this.onActivate = onActivate;
 
     this.onButtonDown = this.onButtonDown.bind(this);
     this.onButtonUp = this.onButtonUp.bind(this);
 
-    inputElement.addBinding('pressdown', this.onButtonDown);
-    inputElement.addBinding('pressup', this.onButtonUp);
+    inputElement.on('buttondown', this.onButtonDown);
+    inputElement.on('buttonup', this.onButtonUp);
   }
 
   onButtonDown (event) {
@@ -20,7 +20,6 @@ export default class LongPress {
   }
 
   onButtonUp () {
-    console.log('>>>>');
     clearTimeout(this.pressTimer);
   }
 }

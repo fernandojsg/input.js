@@ -1,10 +1,16 @@
-export default class ControllerElement {
+import EventEmitter from './utils/event-emitter';
+
+export default class ControllerElement extends EventEmitter {
   constructor (controller, name, buttonId, xAxisId, yAxisId) {
+    super();
+
     this.controller = controller;
     this.name = name;
     this.buttonId = buttonId;
     this.xAxisId = xAxisId;
     this.yAxisId = yAxisId;
+
+    this.previousButtonsState = null;
 
     this.pressed = false;
     this.touched = false;
@@ -17,7 +23,36 @@ export default class ControllerElement {
     this.controller.addBinding(this.name, activator, binding);
   }
 
-  updateState (controller) {
+  handlePress (buttonState) {
+    var evtName;
+
+    // Not changed.
+    if (buttonState.pressed === this.previousButtonState.pressed) { return false; }
+
+    evtName = buttonState.pressed ? 'down' : 'up';
+    this.emit('button' + evtName, {id: this.id, state: buttonState});
+    this.previousButtonState.pressed = buttonState.pressed;
+    return true;    
+  }
+
+  updateState () {
+    if (!this.previousButtonState) {
+      this.previousButtonState = {pressed: false, touched: false, value: 0};
+    }
+
+    var buttonState = this.controller.gamepad.buttons[this.buttonId];
+    var changed = this.handlePress(buttonState);
+  
+    /*
+    var changed = this.handlePress(id, buttonState) ||
+                  this.handleTouch(id, buttonState) ||
+                  this.handleValue(id, buttonState);
+                  */
+
+    if (!changed) { return false; }
+    this.emit('buttonchanged', {id: this.id, state: buttonState});
+    return true;    
+
     var activator;
 /*Ç
     if (typeof this.buttonId !== 'undefined') {
