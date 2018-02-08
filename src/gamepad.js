@@ -1,5 +1,6 @@
 import ControllerElement from './controllerelement';
 import ControllerMappings from './mappings';
+import DoublePress from './activators/doublepress';
 import LongPress from './activators/longpress';
 import SimpleActivator from './activators/simpleactivator';
 import EventEmitter from './utils/event-emitter';
@@ -48,8 +49,16 @@ export default class Gamepad extends EventEmitter {
       console.log('long press X');
     });
 
+    this.addBinding('b', 'doublepress', () => {
+      console.log('double press b');
+    });
+
     this.addBinding('x', 'buttondown', () => {
       console.log('button down X');
+    });
+
+    this.addBinding('leftjoy', 'axismove', (detail) => {
+      console.log('AxisMove', detail);
     });
   }
 
@@ -64,7 +73,9 @@ export default class Gamepad extends EventEmitter {
 
     if (activatorName === 'longpress') {
       this.bindings[buttonName][activatorName] = new LongPress(this, this.elements[buttonName], binding);
-    } else if (activatorName === 'buttondown' || activatorName === 'buttonup') {
+    } else if (activatorName === 'doublepress') {
+      this.bindings[buttonName][activatorName] = new DoublePress(this, this.elements[buttonName], binding);
+    } else if (activatorName === 'buttondown' || activatorName === 'buttonup' || activatorName === 'axismove') {
       this.bindings[buttonName][activatorName] = new SimpleActivator(this, this.elements[buttonName], activatorName, binding);
     }
   }
@@ -77,7 +88,6 @@ export default class Gamepad extends EventEmitter {
   }
 
   tick () {
-    // this.updateGamepad();
     // this.updatePose();
     this.updateElements();
   }

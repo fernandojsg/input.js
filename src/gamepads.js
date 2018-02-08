@@ -12,6 +12,13 @@ class Gamepads {
     this.updateGamepadsList();
     this.throttledUpdateGamepadListInterval = setInterval(this.updateGamepadsList.bind(this), 5);
 
+    this.vrDisplay = null;
+    if (navigator.getVRDisplays) {
+      navigator.getVRDisplays().then(function (displays) {
+        if (displays.length) { self.vrDisplay = displays[0]; }
+      });  
+    }
+
     window.addEventListener('gamepadconnected', event => {
       console.info('Gamepad connected at index %d: %s. %d buttons, %d axes.',
         event.gamepad.index, event.gamepad.id,
