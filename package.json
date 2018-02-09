@@ -9,6 +9,7 @@
     "start": "cross-env NODE_ENV=dev webpack-dev-server --progress --colors -d --host 0.0.0.0"
   },
   "dependencies": {
+    "detect-browser": "^2.0.0",
     "vue": "^2.5.2",
     "vue-router": "^3.0.1"
   },

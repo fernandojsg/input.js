@@ -4,6 +4,7 @@ import DoublePress from './activators/doublepress';
 import LongPress from './activators/longpress';
 import SimpleActivator from './activators/simpleactivator';
 import EventEmitter from './utils/event-emitter';
+import { detect } from 'detect-browser';
 
 export default class GamepadController extends EventEmitter {
   updateGamepad (gamepad) {
@@ -11,8 +12,7 @@ export default class GamepadController extends EventEmitter {
   }
 
   findControllerByName (id) {
-    console.log('>>>>>>>>>>>', id);
-    if (id.indexOf('Xbox 360 Controller') !== -1) {
+    if (id.indexOf('Xbox Wireless Controller') !== -1 || id.indexOf('Xbox 360 Controller') !== -1) {
       return 'xbox';
     }
     else if (id.indexOf('OpenVR Gamepad') !== -1) {
@@ -34,7 +34,9 @@ export default class GamepadController extends EventEmitter {
       return;
     }
     
-    var ControllerMapping = ControllerMappings[gamepadModel];
+    var browser = detect();
+    var ControllerMapping = ControllerMappings[gamepadModel][browser.name] ? 
+      ControllerMappings[gamepadModel][browser.name] : ControllerMappings[gamepadModel].firefox;
 
     this.elements = {};
     
