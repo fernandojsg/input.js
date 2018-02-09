@@ -6,7 +6,7 @@ class Logger {
   }
 
   static debug() {
-    // console.info(baseText, '<debug>',...arguments);
+    console.info(baseText, '<debug>',...arguments);
   }
 }
 

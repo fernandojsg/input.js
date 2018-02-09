@@ -10,6 +10,17 @@ export default class GamepadController extends EventEmitter {
     this.gamepad = gamepad;
   }
 
+  findControllerByName (id) {
+    console.log('>>>>>>>>>>>', id);
+    if (id.indexOf('Xbox 360 Controller') !== -1) {
+      return 'xbox';
+    }
+    else if (id.indexOf('OpenVR Gamepad') !== -1) {
+      return 'openvr';
+    }
+    return false;
+  }
+
   constructor (gamepad) {
     super();
 
@@ -18,7 +29,12 @@ export default class GamepadController extends EventEmitter {
 
     // Build elements based on the controller
     // @todo Detect this one
-    var ControllerMapping = ControllerMappings.xbox;
+    var gamepadModel = this.findControllerByName(gamepad.id);
+    if (gamepadModel === false) {
+      return;
+    }
+    
+    var ControllerMapping = ControllerMappings[gamepadModel];
 
     this.elements = {};
     
