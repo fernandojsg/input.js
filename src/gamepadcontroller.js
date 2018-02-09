@@ -5,7 +5,7 @@ import LongPress from './activators/longpress';
 import SimpleActivator from './activators/simpleactivator';
 import EventEmitter from './utils/event-emitter';
 
-export default class Gamepad extends EventEmitter {
+export default class GamepadController extends EventEmitter {
   updateGamepad (gamepad) {
     this.gamepad = gamepad;
   }

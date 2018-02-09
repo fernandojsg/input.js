@@ -1,13 +1,12 @@
-import Gamepad from './gamepad';
+import GamepadController from './gamepadcontroller';
 
-class Gamepads {
+class Controllers {
   constructor () {
 
-    this.gamepads = [];
-    this.gamepad = [];
+    this.gamepadControllers = [];
 
-    this.vrGamepads = [];
-    this.stdGamepads = [];
+    this.vrGamepadControllers = [];
+    this.stdGamepadControllers = [];
 
     this.updateGamepadsList();
     this.throttledUpdateGamepadListInterval = setInterval(this.updateGamepadsList.bind(this), 5);
@@ -45,8 +44,8 @@ class Gamepads {
   }
 
   findGamepad (gamepad) {
-    for (var i = 0; i < this.gamepads.length; i++) {
-      var controller = this.gamepads[i];
+    for (var i = 0; i < this.gamepadControllers.length; i++) {
+      var controller = this.gamepadControllers[i];
       if (controller.gamepad.id === gamepad.id) {
         return controller;
       }
@@ -58,29 +57,29 @@ class Gamepads {
     var gamepads = navigator.getGamepads();
     if (!gamepads) {return;}
     
-    var prevCount = this.gamepads.length;
-    this.vrGamepads.length = 0;
-    this.stdGamepads.length = 0;
+    var prevCount = this.gamepadControllers.length;
+    this.vrGamepadControllers.length = 0;
+    this.stdGamepadControllers.length = 0;
 
     for (var i = 0; i < gamepads.length; ++i) {
       var gamepad = gamepads[i];
       if (gamepad) {
         if ((gamepad.pose && gamepad.pose.hasOrientation) || gamepad.displayId) {
-          this.vrGamepads.push(gamepad);
+          this.vrGamepadControllers.push(gamepad);
         } else {
-          this.stdGamepads.push(gamepad);
+          this.stdGamepadControllers.push(gamepad);
         }
         var controller = this.findGamepad(gamepad);
         if (controller !== null) {
           controller.updateGamepad(gamepad);
         } else {
-          var gamepadObj = new Gamepad(gamepad);
-          this.gamepads.push(gamepadObj);
+          var gamepadObj = new GamepadController(gamepad);
+          this.gamepadControllers.push(gamepadObj);
         }
       }
     }
   }
 }
 
-const gamepads = new Gamepads();
-export default gamepads;
+const controllers = new Controllers();
+export default controllers;
