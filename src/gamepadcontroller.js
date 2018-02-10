@@ -50,7 +50,7 @@ export default class GamepadController extends EventEmitter {
     }
 
     this.interval = setInterval(this.tick.bind(this), 5);
-
+/*
     // Test
     this.addBinding('a', 'buttondown', () => {
       console.log('button down A');
@@ -78,6 +78,7 @@ export default class GamepadController extends EventEmitter {
     this.addBinding('leftjoy', 'axismove', (detail) => {
       console.log('AxisMove', detail);
     });
+    */
   }
 
   clearBindings () {

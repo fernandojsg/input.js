@@ -9,7 +9,7 @@ export default class SimpleActivator {
       this.inputElement = inputElement;
       this.onActivate = onActivate;
       this.eventName = eventName;
-  
+      debugger;
       inputElement.on(eventName, onActivate);
     }
   }

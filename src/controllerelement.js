@@ -79,6 +79,7 @@ export default class ControllerElement extends EventEmitter {
     if (buttonState.value === this.value) { return false; }
 
     this.value = buttonState.value;
+    this.emit('value', {id: this.id, state: buttonState}, true, {touches: []});
     return true;
   }
 
@@ -89,6 +90,7 @@ export default class ControllerElement extends EventEmitter {
     // Due to unfortunate name collision, add empty touches array to avoid Daydream error.
     this.emit('touch' + evtName, {id: this.id, state: buttonState}, true, {touches: []});
     this.touched = buttonState.touched;
+    Logger.debug(this.name, 'touch', evtName);
     return true;
   }
 
@@ -97,17 +99,20 @@ export default class ControllerElement extends EventEmitter {
 
     this.handleAxes();
 
-    var press = this.handlePress(buttonState);
-    var value = this.handleValue(buttonState);
-    var touch = this.handleTouch(buttonState);
-    var changed = press || value || touch;
-    
-    if (!changed) { return false; }
-    Logger.debug(this.name, 'changed', buttonState.pressed, buttonState.value);
-    this.emit('buttonchanged', {id: this.id, state: buttonState});
-    return true;    
+    if (typeof this.buttonId !== 'undefined') {
+      var buttonState = this.controller.gamepad.buttons[this.buttonId];
 
-    var activator;
+      var press = this.handlePress(buttonState);
+      var value = this.handleValue(buttonState);
+      var touch = this.handleTouch(buttonState);
+      var changed = press || value || touch;
+      
+      if (!changed) { return false; }
+      Logger.debug(this.name, 'changed', buttonState.pressed, buttonState.value);
+      this.emit('buttonchanged', {id: this.id, state: buttonState});
+      return true;    
+    }
+
 /*Ç
     if (typeof this.buttonId !== 'undefined') {
       var buttonState = controller.buttons[this.buttonId];
