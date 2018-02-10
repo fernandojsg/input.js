@@ -11,10 +11,6 @@ export default class ControllerElement extends EventEmitter {
     this.xAxisId = xAxisId;
     this.yAxisId = yAxisId;
 
-    this.previousButtonsState = null;
-    this.previousxAxisValue = 0;
-    this.previousyAxisValue = 0;
-
     this.pressed = false;
     this.touched = false;
     this.value = 0;
@@ -44,19 +40,19 @@ export default class ControllerElement extends EventEmitter {
     var changed = false;
 
     if (typeof this.xAxisId !== 'undefined') {
-      this.xAxisValue = this.controller.gamepad.axes[this.xAxisId];
-      if (this.previousxAxisValue !== this.xAxisValue) {
-        Logger.debug('x axis', this.xAxisValue);
-        this.axisMoveEventDetail.x = this.previousxAxisValue = this.xAxisValue;
+      var xAxisValue = this.controller.gamepad.axes[this.xAxisId];
+      if (xAxisValue !== this.xAxisValue) {
+        Logger.debug('x axis', xAxisValue);
+        this.axisMoveEventDetail.x = this.xAxisValue = xAxisValue;
         this.axisMoveEventDetail.xChanged = changed = true;
       }
     }
 
     if (typeof this.yAxisId !== 'undefined') {
-      this.yAxisValue = this.controller.gamepad.axes[this.yAxisId];
-      if (this.previousyAxisValue !== this.yAxisValue) {
-        Logger.debug('y axis', this.yAxisValue);
-        this.axisMoveEventDetail.y = this.previousyAxisValue = this.yAxisValue;
+      var yAxisValue = this.controller.gamepad.axes[this.yAxisId];
+      if (yAxisValue !== this.yAxisValue) {
+        Logger.debug('y axis', yAxisValue);
+        this.axisMoveEventDetail.y = this.yAxisValue = yAxisValue;
         this.axisMoveEventDetail.yChanged = changed = true;
       }
     }
@@ -69,38 +65,34 @@ export default class ControllerElement extends EventEmitter {
   }
 
   handlePress (buttonState) {
-    if (buttonState.pressed === this.previousButtonState.pressed) { return false; }
+    if (buttonState.pressed === this.pressed) { return false; }
 
     var evtName = buttonState.pressed ? 'down' : 'up';
     Logger.debug(this.name, 'press', evtName);
     this.emit('button' + evtName, {id: this.id, state: buttonState});
     
-    this.previousButtonState.pressed = buttonState.pressed;
+    this.pressed = buttonState.pressed;
     return true;    
   }
 
   handleValue (buttonState) {
-    if (buttonState.value === this.previousButtonState.value) { return false; }
+    if (buttonState.value === this.value) { return false; }
 
-    this.previousButtonState.value = buttonState.value;
+    this.value = buttonState.value;
     return true;
   }
 
   handleTouch (buttonState) {
-    if (buttonState.touched === this.previousButtonState.touched) { return false; }
+    if (buttonState.touched === this.touched) { return false; }
 
     var evtName = buttonState.touched ? 'start' : 'end';
     // Due to unfortunate name collision, add empty touches array to avoid Daydream error.
     this.emit('touch' + evtName, {id: this.id, state: buttonState}, true, {touches: []});
-    this.previousButtonState.touched = buttonState.touched;
+    this.touched = buttonState.touched;
     return true;
   }
 
   updateState () {
-    if (!this.previousButtonState) {
-      this.previousButtonState = {pressed: false, touched: false, value: 0};
-    }
-
     var buttonState = this.controller.gamepad.buttons[this.buttonId];
 
     this.handleAxes();
