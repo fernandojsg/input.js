@@ -4,6 +4,7 @@ export default class DoublePress {
     this.timeOut = 250;
     this.eventName = 'buttondown';
     this.onActivate = onActivate;
+    this.inputElement = inputElement;
 
     this.onButtonDown = this.onButtonDown.bind(this);
 
@@ -20,6 +21,6 @@ export default class DoublePress {
   }
 
   removeListeners () {
-    //this.el.removeEventListener(this.eventName, this.onButtonDown);
+    this.inputElement.off(this.eventName, this.onButtonDown);
   }
 }

@@ -1,1 +1,1 @@
-import Gamepads from './gamepads';
+export {default as InputManager} from './inputmanager';

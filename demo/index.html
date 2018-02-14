@@ -12,5 +12,13 @@
   <body>
     <h1>input.js</h1>
     <div></div>
+    <script>
+      var input = new INPUT.InputManager();
+      var gamepad = null;
+      input.getDevices().then(devices => {
+        console.log(devices);
+        gamepad = devices[0];
+      });
+    </script>
   </body>
 </html>

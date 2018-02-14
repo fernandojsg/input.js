@@ -46,7 +46,9 @@ module.exports = {
   output: {
     path: path.join(__dirname, outPath),
     filename: filename,
-    publicPath: '/dist/'
+    publicPath: '/dist/',
+    libraryTarget: 'umd',
+    library: 'INPUT'
   },
   module: {
     loaders: [

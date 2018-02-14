@@ -1,17 +1,17 @@
-import ControllerElement from './controllerelement';
-import ControllerMappings from './mappings';
-import DoublePress from './activators/doublepress';
-import LongPress from './activators/longpress';
-import SimpleActivator from './activators/simpleactivator';
-import EventEmitter from './utils/event-emitter';
+import ControllerElement from './ControllerElement';
+import ControllerMappings from '../mappings';
+import DoublePress from '../activators/DoublePress';
+import LongPress from '../activators/LongPress';
+import SimpleActivator from '../activators/SimpleActivator';
 import { detect } from 'detect-browser';
+import Device from '../Device';
 
-export default class GamepadController extends EventEmitter {
+export default class Gamepad extends Device {
   updateGamepad (gamepad) {
     this.gamepad = gamepad;
   }
 
-  findControllerByName (id) {
+  detectGamepadById (id) {
     if (id.indexOf('Xbox Wireless Controller') !== -1 || id.indexOf('Xbox 360 Controller') !== -1) {
       return 'xbox';
     }
@@ -28,11 +28,15 @@ export default class GamepadController extends EventEmitter {
     this.bindings = {};
 
     // Build elements based on the controller
-    // @todo Detect this one
-    var gamepadModel = this.findControllerByName(gamepad.id);
+    var gamepadModel = this.detectGamepadById(gamepad.id);
     if (gamepadModel === false) {
+      console.warn(`Gamepad with id: "${gamepad.id}" can't be identified.`);
       return;
     }
+
+    this.id = gamepad.id;
+    this.model = gamepadModel;
+    this.type = 'gamepad';
     
     var browser = detect();
     var ControllerMapping = ControllerMappings[gamepadModel][browser.name] ? 
